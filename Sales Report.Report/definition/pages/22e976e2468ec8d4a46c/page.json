@@ -1,9 +1,0 @@
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
-  "name": "22e976e2468ec8d4a46c",
-  "displayName": "Tooltip",
-  "displayOption": "ActualSize",
-  "height": 150,
-  "width": 240,
-  "type": "Tooltip"
-}
