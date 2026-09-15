@@ -1,0 +1,48 @@
+table Addition
+	lineageTag: 28501cbc-4f31-489b-a262-871c88ec28b5
+
+	measure 'Last refreshed' = "Last refreshed: " & FORMAT(NOW(), "dd MMM yyyy HH:mm")
+		lineageTag: 3f2ffb67-75d8-425a-a6b8-12b0a609a8d2
+
+	measure 'User Fullname' =
+			
+			VAR Email = USERPRINCIPALNAME()
+			VAR WithoutDomain = LEFT(Email, FIND("@", Email) - 1)
+			VAR FirstDot = FIND(".", WithoutDomain, 1)
+			VAR FirstNameRaw = LEFT(WithoutDomain, FirstDot - 1)
+			VAR LastNameRaw = MID(WithoutDomain, FirstDot + 1, 100)
+			VAR FirstName =
+			    UPPER(LEFT(FirstNameRaw,1)) &
+			    LOWER(MID(FirstNameRaw,2,100))
+			VAR LastName =
+			    UPPER(LEFT(LastNameRaw,1)) &
+			    LOWER(MID(LastNameRaw,2,100))
+			RETURN FirstName & " " & LastName
+		lineageTag: a9da9d4a-0b65-487b-9d29-bf81418e7fb2
+
+	column 'Date Last Refreshed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: dc8337ec-be3a-4c65-ae13-b8fc439dd25c
+		summarizeBy: none
+		sourceColumn: Date Last Refreshed
+
+		variation Variation
+			isDefault
+			relationship: c0d254c7-e7b1-403c-b397-8deda89723e7
+			defaultHierarchy: LocalDateTable_05d60855-9a5b-45b9-a85d-faa45b8d113a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Addition = m
+		mode: import
+		source =
+				let
+				Source = #table(type table[Date Last Refreshed=datetime], {{DateTime.LocalNow()}})
+				in
+				Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

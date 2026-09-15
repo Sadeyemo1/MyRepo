@@ -1,0 +1,107 @@
+table Customer
+	lineageTag: 878f6ced-4728-4af9-8f6f-2443283ef45c
+
+	measure 'Total Customers' = DISTINCTCOUNT(Customer[CustomerID])
+		formatString: 0
+		lineageTag: 9028b9e8-5560-4098-a732-4d4ba5ed7111
+
+	measure 'Member Customers' = CALCULATE([Total Customers], Customer[MemberStatus] = "Member")
+		formatString: 0
+		lineageTag: 769ccb4e-a6b9-478f-b3ab-1c789e8b57d8
+
+	measure 'Total Member' = DIVIDE([Member Customers], [Total Customers], 0)
+		lineageTag: d90ffe9c-f105-467e-9721-bf24f4662154
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top Age Group' =
+			
+			VAR SummaryTable =
+			    SUMMARIZE (
+			        Customer,
+			        Customer[AgeGroup],
+			        Customer[AgeGroup sort],
+			        "CustomerCount", [Total Customers]
+			    )
+			VAR TopRow =
+			    TOPN (
+			        1,
+			        SummaryTable,
+			        [CustomerCount], DESC,
+			        Customer[AgeGroup sort], ASC
+			    )
+			RETURN
+			MAXX ( TopRow, Customer[AgeGroup] )
+		lineageTag: f56d66b8-e5c3-4ac8-8b62-e72eaa02a101
+
+	column CustomerID
+		dataType: string
+		lineageTag: fe8d9cf4-1ae4-44ec-a97d-b52877cce363
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgeGroup
+		dataType: string
+		lineageTag: 116d9885-3d09-4b60-850a-7f9234b67e1f
+		summarizeBy: none
+		sourceColumn: AgeGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column MemberStatus
+		dataType: string
+		lineageTag: da313051-27d1-488f-b488-19542fdbb548
+		summarizeBy: none
+		sourceColumn: MemberStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column TierStatus
+		dataType: string
+		lineageTag: 6cdeeda4-109a-40c0-98fd-2fa5acaaf21e
+		summarizeBy: none
+		sourceColumn: TierStatus
+		sortByColumn: 'TierStatus sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TierStatus sort'
+		dataType: string
+		lineageTag: e6ac8765-1b05-4542-891f-70503f31b80f
+		summarizeBy: none
+		sourceColumn: TierStatus sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'AgeGroup sort'
+		dataType: string
+		lineageTag: a3d6aa4a-f08b-4b23-8719-a3cfb368b9c9
+		summarizeBy: none
+		sourceColumn: AgeGroup sort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\jhermawa\OneDrive - Capgemini\Documents\Demo Dashboard\dataset_retail_dashboard.xlsx"), null, true),
+				    Customer_Sheet = Source{[Item="Customer",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Customer_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerID", type text}, {"AgeGroup", type text}, {"MemberStatus", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type1",null,"Non-Member",Replacer.ReplaceValue,{"TierStatus"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Replaced Value", "TierStatus sort", each if [TierStatus] = "Gold" then 1 else if [TierStatus] = "Silver" then 2 else if [TierStatus] = "Bronze" then 3 else 4),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Most AgeGroup", each if [AgeGroup] = "18-24" then 1 else if [AgeGroup] = "25-34" then 2 else if [AgeGroup] = "35-44" then 3 else if [AgeGroup] = "45-54" then 4 else 5),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column1",{{"Most AgeGroup", "AgeGroup sort"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

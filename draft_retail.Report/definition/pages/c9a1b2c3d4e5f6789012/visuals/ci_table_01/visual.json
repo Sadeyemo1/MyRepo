@@ -1,0 +1,128 @@
+{
+    "position":  {
+                     "width":  620,
+                     "y":  40,
+                     "z":  6000,
+                     "x":  640,
+                     "tabOrder":  8000,
+                     "height":  620
+                 },
+    "name":  "ci_table_01",
+    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+    "visual":  {
+                   "query":  {
+                                 "queryState":  {
+                                                    "Rows":  {
+                                                                 "projections":  [
+                                                                                     {
+                                                                                         "field":  {
+                                                                                                       "Column":  {
+                                                                                                                      "Expression":  {
+                                                                                                                                         "SourceRef":  {
+                                                                                                                                                           "Entity":  "Customer"
+                                                                                                                                                       }
+                                                                                                                                     },
+                                                                                                                      "Property":  "TierStatus"
+                                                                                                                  }
+                                                                                                   },
+                                                                                         "nativeQueryRef":  "Tier Status",
+                                                                                         "queryRef":  "Customer.TierStatus"
+                                                                                     },
+                                                                                     {
+                                                                                         "field":  {
+                                                                                                       "Column":  {
+                                                                                                                      "Expression":  {
+                                                                                                                                         "SourceRef":  {
+                                                                                                                                                           "Entity":  "Customer"
+                                                                                                                                                       }
+                                                                                                                                     },
+                                                                                                                      "Property":  "AgeGroup"
+                                                                                                                  }
+                                                                                                   },
+                                                                                         "nativeQueryRef":  "Age Group",
+                                                                                         "queryRef":  "Customer.AgeGroup"
+                                                                                     }
+                                                                                 ]
+                                                             },
+                                                    "Values":  {
+                                                                   "projections":  [
+                                                                                       {
+                                                                                           "field":  {
+                                                                                                         "Measure":  {
+                                                                                                                         "Expression":  {
+                                                                                                                                            "SourceRef":  {
+                                                                                                                                                              "Entity":  "Sales"
+                                                                                                                                                          }
+                                                                                                                                        },
+                                                                                                                         "Property":  "Total Sales"
+                                                                                                                     }
+                                                                                                     },
+                                                                                           "nativeQueryRef":  "Total Sales",
+                                                                                           "queryRef":  "Sales.Total Sales"
+                                                                                       },
+                                                                                       {
+                                                                                           "field":  {
+                                                                                                         "Measure":  {
+                                                                                                                         "Expression":  {
+                                                                                                                                            "SourceRef":  {
+                                                                                                                                                              "Entity":  "Sales"
+                                                                                                                                                          }
+                                                                                                                                        },
+                                                                                                                         "Property":  "Total Transactions"
+                                                                                                                     }
+                                                                                                     },
+                                                                                           "nativeQueryRef":  "Total Transactions",
+                                                                                           "queryRef":  "Sales.Total Transactions"
+                                                                                       },
+                                                                                       {
+                                                                                           "field":  {
+                                                                                                         "Measure":  {
+                                                                                                                         "Expression":  {
+                                                                                                                                            "SourceRef":  {
+                                                                                                                                                              "Entity":  "Customer"
+                                                                                                                                                          }
+                                                                                                                                        },
+                                                                                                                         "Property":  "Total Customers"
+                                                                                                                     }
+                                                                                                     },
+                                                                                           "nativeQueryRef":  "Total Customers",
+                                                                                           "queryRef":  "Customer.Total Customers"
+                                                                                       }
+                                                                                   ]
+                                                               }
+                                                }
+                             },
+                   "objects":  {
+                                   "columnHeaders":  [
+                                                         {
+                                                             "properties":  {
+                                                                                "columnAdjustment":  "growToFit"
+                                                                            }
+                                                         }
+                                                     ],
+                                   "values":  [
+                                                  {
+                                                      "properties":  {
+
+                                                                     }
+                                                  }
+                                              ]
+                               },
+                   "visualContainerObjects":  {
+                                                  "title":  [
+                                                                {
+                                                                    "properties":  {
+                                                                                       "text":  {
+                                                                                                    "expr":  {
+                                                                                                                 "Literal":  {
+                                                                                                                                 "Value":  "Top-performing Customer Groups"
+                                                                                                                             }
+                                                                                                             }
+                                                                                                }
+                                                                                   }
+                                                                }
+                                                            ]
+                                              },
+                   "visualType":  "pivotTable"
+               }
+}

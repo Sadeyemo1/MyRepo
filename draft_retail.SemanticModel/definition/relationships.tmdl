@@ -1,0 +1,28 @@
+relationship dfc7c396-bd84-453b-af8f-ff1da103a38c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sales.Date
+	toColumn: LocalDateTable_41614d07-ff71-46d2-98cb-4db2f81dd2be.Date
+
+relationship AutoDetected_295a237c-0fb5-48bf-815f-9dfdb9ce7bc4
+	fromColumn: Sales.CustomerID
+	toColumn: Customer.CustomerID
+
+relationship AutoDetected_b2c517c6-754a-4856-9981-7a044847e661
+	fromColumn: Sales.ProductID
+	toColumn: Product.ProductID
+
+relationship AutoDetected_4006a79c-0b8b-4867-a13d-da55e11eb14c
+	fromColumn: Sales.StoreID
+	toColumn: Store.StoreID
+
+relationship AutoDetected_d492be3e-d685-4799-a766-6652ac503d42
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Customer Status Member'.CustomerID
+	toColumn: Customer.CustomerID
+
+relationship c0d254c7-e7b1-403c-b397-8deda89723e7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Addition.'Date Last Refreshed'
+	toColumn: LocalDateTable_05d60855-9a5b-45b9-a85d-faa45b8d113a.Date
+
